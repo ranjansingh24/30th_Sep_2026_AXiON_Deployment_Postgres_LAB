@@ -58,4 +58,11 @@ module "vm-creation" {
   }
 }
 
+module "pg-creation" {
+  depends_on = [module.rg-creation]
+  source     = "../Child-Module/azurerm_postgresql_flexible_server"
+  c-pg       = var.p-pg
+}
+
+
 

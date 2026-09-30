@@ -37,3 +37,8 @@ variable "p-vm" {
   type    = map(any)
   default = {}
 }
+
+variable "p-pg" {
+  type    = map(any)
+  default = {}
+}
