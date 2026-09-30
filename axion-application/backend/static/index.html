@@ -146,7 +146,7 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .health-badge {
@@ -187,7 +187,7 @@
             background: var(--purple-gradient);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 9px 18px;
             border-radius: 25px;
             font-weight: 600;
             font-size: 0.85rem;
@@ -199,8 +199,31 @@
             gap: 8px;
         }
 
-        .btn-ai:hover {
-            transform: scale(1.03);
+        .btn-login {
+            background: #2b6cb0;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover {
+            background: #3182ce;
+        }
+
+        .user-profile-badge {
+            background: #1a202c;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #68d391;
+            font-weight: 600;
+            display: none;
         }
 
         .content-body {
@@ -316,7 +339,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* AI ASSISTANT MODAL */
+        /* MODALS */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -330,7 +353,7 @@
         .modal-box {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            width: 550px;
+            width: 450px;
             border-radius: 16px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -342,36 +365,50 @@
             margin-bottom: 20px;
         }
 
-        .chat-response {
-            background: #1a202c;
-            border-radius: 10px;
-            padding: 15px;
-            min-height: 80px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .form-group {
+            margin-bottom: 18px;
         }
 
-        .chat-input {
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-input {
             width: 100%;
             background: #090b10;
             border: 1px solid var(--border-color);
             padding: 12px;
             color: white;
             border-radius: 8px;
-            margin-bottom: 15px;
+            font-size: 0.9rem;
         }
 
         .btn-submit {
             background: var(--purple-gradient);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
             font-weight: 600;
+            font-size: 0.9rem;
         }
+
+        .alert-msg {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .alert-success { background: rgba(56, 161, 105, 0.2); color: #68d391; border: 1px solid #38a169; }
+        .alert-error { background: rgba(229, 62, 62, 0.2); color: #fc8181; border: 1px solid #e53e3e; }
     </style>
 </head>
 <body>
@@ -431,6 +468,14 @@
                 <button class="btn-ai" onclick="openAIModal()">
                     ✨ Ask AI Assistant
                 </button>
+
+                <button class="btn-login" id="btn-login-trigger" onclick="openLoginModal()">
+                    🔑 Login
+                </button>
+
+                <div class="user-profile-badge" id="user-badge">
+                    👤 admin@axion.com
+                </div>
             </div>
         </div>
 
@@ -471,17 +516,42 @@
         </div>
     </div>
 
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🔑 AXiON Admin Login</h3>
+                <button onclick="closeLoginModal()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.2rem;">✖</button>
+            </div>
+
+            <div class="alert-msg alert-error" id="login-error"></div>
+            <div class="alert-msg alert-success" id="login-success"></div>
+
+            <div class="form-group">
+                <label>User ID / Username</label>
+                <input type="text" class="form-input" id="login-username" value="admin@axion.com" placeholder="admin@axion.com">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-input" id="login-password" value="Admin@AXiON2026!" placeholder="Admin@AXiON2026!">
+            </div>
+
+            <button class="btn-submit" onclick="performLogin()">Authenticate & Connect Live</button>
+        </div>
+    </div>
+
     <!-- AI ASSISTANT MODAL -->
     <div class="modal-overlay" id="ai-modal">
-        <div class="modal-box">
+        <div class="modal-box" style="width: 550px;">
             <div class="modal-header">
                 <h3>🤖 AXiON Agentic AI Assistant</h3>
                 <button onclick="closeAIModal()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.2rem;">✖</button>
             </div>
-            <div class="chat-response" id="ai-response">
+            <div style="background: #1a202c; border-radius: 10px; padding: 15px; min-height: 80px; margin-bottom: 20px; font-size: 0.9rem; line-height: 1.5;" id="ai-response">
                 Hello Admin! I am monitoring 10 global assets across North, South, East, and West refineries. Ask me anything about plant telemetry or alerts.
             </div>
-            <input type="text" class="chat-input" id="ai-input" placeholder="e.g. What is the status of North Refinery?">
+            <input type="text" class="form-input" id="ai-input" placeholder="e.g. What is the status of North Refinery?" style="margin-bottom: 15px;">
             <button class="btn-submit" onclick="askAI()">Analyze & Generate Insight</button>
         </div>
     </div>
@@ -496,7 +566,7 @@
                 document.getElementById('active-alerts').innerText = data.active_alerts;
                 document.getElementById('last-update').innerText = `10 Assets Online | ${data.last_update}`;
             } catch(e) {
-                console.log("Using default metric cache");
+                console.log("Using metric cache");
             }
         }
 
@@ -538,6 +608,52 @@
             }
         }
 
+        function openLoginModal() {
+            document.getElementById('login-modal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        async function performLogin() {
+            const u = document.getElementById('login-username').value;
+            const p = document.getElementById('login-password').value;
+            const err = document.getElementById('login-error');
+            const succ = document.getElementById('login-success');
+
+            err.style.display = 'none';
+            succ.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: u, password: p})
+                });
+                const data = await res.json();
+
+                if(res.ok && data.success) {
+                    succ.innerText = `✅ Authentication Successful! Token generated. Welcome ${data.username}`;
+                    succ.style.display = 'block';
+
+                    setTimeout(() => {
+                        closeLoginModal();
+                        document.getElementById('btn-login-trigger').style.display = 'none';
+                        const badge = document.getElementById('user-badge');
+                        badge.innerText = `👤 ${data.username} (${data.role})`;
+                        badge.style.display = 'block';
+                    }, 1200);
+                } else {
+                    err.innerText = `❌ ${data.detail || 'Login failed'}`;
+                    err.style.display = 'block';
+                }
+            } catch(e) {
+                err.innerText = "❌ Unable to reach authentication server.";
+                err.style.display = 'block';
+            }
+        }
+
         function openAIModal() {
             document.getElementById('ai-modal').style.display = 'flex';
         }
@@ -559,7 +675,7 @@
                 const data = await res.json();
                 document.getElementById('ai-response').innerText = data.response;
             } catch(e) {
-                document.getElementById('ai-response').innerText = 'AI Assistant is currently offline.';
+                document.getElementById('ai-response').innerText = 'AI Assistant is offline.';
             }
         }
 
