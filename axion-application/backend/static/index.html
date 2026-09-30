@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXION INTELLIGENCE PLATFORM | DevOps Insiders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #090b10;
+            --bg-card: #11141d;
+            --bg-sidebar: #0b0d14;
+            --border-color: #1e2330;
+            --text-primary: #e2e8f0;
+            --text-muted: #718096;
+            --accent-blue: #3182ce;
+            --accent-green: #38a169;
+            --accent-red: #e53e3e;
+            --purple-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .logo-box {
+            background: #ffffff;
+            color: #000;
+            font-weight: 900;
+            font-size: 1.2rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .logo-subtext {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #1a202c;
+            color: #ffffff;
+            border-left: 3px solid #667eea;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .devops-badge {
+            display: inline-block;
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            margin-top: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* MAIN CONTENT */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .top-header {
+            height: 70px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .header-title h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .health-badge {
+            background: #0d131f;
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-green { background: #38a169; box-shadow: 0 0 8px #38a169; }
+        .dot-red { background: #e53e3e; box-shadow: 0 0 8px #e53e3e; }
+
+        .live-stream {
+            background: rgba(229, 62, 62, 0.1);
+            border: 1px solid rgba(229, 62, 62, 0.3);
+            color: #fc8181;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ai {
+            background: var(--purple-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-ai:hover {
+            transform: scale(1.03);
+        }
+
+        .content-body {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* METRICS CARDS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .metric-value.alerts { color: #fc8181; }
+        .metric-value.online { color: #68d391; }
+
+        /* PLANT OPERATIONS GRID */
+        .plant-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .plant-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .plant-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plant-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .plant-type {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .btn-view-devices {
+            color: #63b3ed;
+            font-size: 0.8rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .plant-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .stat-box h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .stat-box span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* AI ASSISTANT MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            width: 550px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .chat-response {
+            background: #1a202c;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 80px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .chat-input {
+            width: 100%;
+            background: #090b10;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            background: var(--purple-gradient);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div>
+            <div class="logo-section">
+                <div class="logo-box">AXION</div>
+                <div>
+                    <div class="logo-subtext">SYSTEMS</div>
+                </div>
+            </div>
+
+            <ul class="nav-list">
+                <li class="nav-item active">📊 Fleet Summary</li>
+                <li class="nav-item">💻 Device Diagnostics</li>
+                <li class="nav-item">🏢 Asset Hierarchy</li>
+                <li class="nav-item">🕸️ System Topology</li>
+                <li class="nav-item">⚠️ Alarms & Events</li>
+                <li class="nav-item">📈 Correlation Engine</li>
+                <li class="nav-item">⚙️ System Settings</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div>DEVELOPED BY</div>
+            <div class="devops-badge">DEVOPS INSIDERS</div>
+        </div>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+        <!-- TOP HEADER -->
+        <div class="top-header">
+            <div class="header-title">
+                <h1>AXION INTELLIGENCE PLATFORM</h1>
+                <p>Agentic AI Predictive Insights</p>
+            </div>
+
+            <div class="header-controls">
+                <div class="health-badge">
+                    <span>SYSTEM HEALTH:</span>
+                    <span class="status-dot dot-green"></span> API
+                    <span class="status-dot dot-green"></span> DB
+                    <span class="status-dot dot-green"></span> Sim
+                </div>
+
+                <div class="live-stream">
+                    <span class="status-dot dot-red"></span> LIVE STREAM
+                </div>
+
+                <div style="font-size: 0.75rem; color: var(--text-muted);" id="last-update">
+                    10 Assets Online
+                </div>
+
+                <button class="btn-ai" onclick="openAIModal()">
+                    ✨ Ask AI Assistant
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENT BODY -->
+        <div class="content-body">
+            <div class="section-header">
+                <h2>Fleet Summary</h2>
+                <p>High-level overview of all global assets and plant health.</p>
+            </div>
+
+            <!-- METRICS GRID -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">🏢 TOTAL ASSETS</div>
+                    <div class="metric-value" id="total-assets">10</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">⚡ ASSETS ONLINE</div>
+                    <div class="metric-value online" id="online-assets">10</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">⚠️ ACTIVE ALERTS</div>
+                    <div class="metric-value alerts" id="active-alerts">4</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Plant Operations</h2>
+                <p>Real-time refinery telemetry stream & alert monitoring.</p>
+            </div>
+
+            <!-- PLANT OPERATIONS GRID -->
+            <div class="plant-grid" id="plant-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI ASSISTANT MODAL -->
+    <div class="modal-overlay" id="ai-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>🤖 AXiON Agentic AI Assistant</h3>
+                <button onclick="closeAIModal()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.2rem;">✖</button>
+            </div>
+            <div class="chat-response" id="ai-response">
+                Hello Admin! I am monitoring 10 global assets across North, South, East, and West refineries. Ask me anything about plant telemetry or alerts.
+            </div>
+            <input type="text" class="chat-input" id="ai-input" placeholder="e.g. What is the status of North Refinery?">
+            <button class="btn-submit" onclick="askAI()">Analyze & Generate Insight</button>
+        </div>
+    </div>
+
+    <script>
+        async function fetchMetrics() {
+            try {
+                const res = await fetch('/api/fleet');
+                const data = await res.json();
+                document.getElementById('total-assets').innerText = data.total_assets;
+                document.getElementById('online-assets').innerText = data.online_assets;
+                document.getElementById('active-alerts').innerText = data.active_alerts;
+                document.getElementById('last-update').innerText = `10 Assets Online | ${data.last_update}`;
+            } catch(e) {
+                console.log("Using default metric cache");
+            }
+        }
+
+        async function fetchPlants() {
+            try {
+                const res = await fetch('/api/plant-operations');
+                const data = await res.json();
+                const grid = document.getElementById('plant-grid');
+                grid.innerHTML = '';
+                data.forEach(plant => {
+                    grid.innerHTML += `
+                        <div class="plant-card">
+                            <div class="plant-card-header">
+                                <div>
+                                    <div class="plant-name">${plant.region}</div>
+                                    <div class="plant-type">${plant.type}</div>
+                                </div>
+                                <a href="#" class="btn-view-devices">View Devices &rarr;</a>
+                            </div>
+                            <div class="plant-stats">
+                                <div class="stat-box">
+                                    <h4>${plant.total}</h4>
+                                    <span>TOTAL</span>
+                                </div>
+                                <div class="stat-box">
+                                    <h4 style="color:#68d391">${plant.online}</h4>
+                                    <span>ONLINE</span>
+                                </div>
+                                <div class="stat-box">
+                                    <h4 style="color:${plant.alerts > 0 ? '#fc8181' : '#e2e8f0'}">${plant.alerts}</h4>
+                                    <span>ALERTS</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) {
+                console.log("Error loading plant operations");
+            }
+        }
+
+        function openAIModal() {
+            document.getElementById('ai-modal').style.display = 'flex';
+        }
+
+        function closeAIModal() {
+            document.getElementById('ai-modal').style.display = 'none';
+        }
+
+        async function askAI() {
+            const input = document.getElementById('ai-input').value;
+            if(!input) return;
+            document.getElementById('ai-response').innerText = 'Analyzing telemetry data...';
+            try {
+                const res = await fetch('/api/ai-assistant', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({prompt: input})
+                });
+                const data = await res.json();
+                document.getElementById('ai-response').innerText = data.response;
+            } catch(e) {
+                document.getElementById('ai-response').innerText = 'AI Assistant is currently offline.';
+            }
+        }
+
+        fetchMetrics();
+        fetchPlants();
+        setInterval(() => { fetchMetrics(); fetchPlants(); }, 5000);
+    </script>
+</body>
+</html>
